@@ -11,19 +11,24 @@ struct Claims {
 }
 
 fn main() {
-    let my_claims =
+    
+    // ================== ENCODING ======================
+    let my_claims: Claims =
         Claims { sub: "b@b.com".to_owned(), company: "ACME".to_owned(), exp: 10000000000 };
     let key = b"secret";
 
     let header =
         Header { kid: Some("signing_key".to_owned()), alg: Algorithm::HS512, ..Default::default() };
 
+    // match control flow
     let token = match encode(&header, &my_claims, &EncodingKey::from_secret(key)) {
         Ok(t) => t,
         Err(_) => panic!(), // in practice you would return the error
     };
     println!("{:?}", token);
+    //=========================================== 
 
+    // DECODING
     let token_data = match decode::<Claims>(
         &token,
         &DecodingKey::from_secret(key),
