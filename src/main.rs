@@ -14,7 +14,7 @@ fn main() {
     
     // ================== ENCODING ======================
     let my_claims: Claims =
-        Claims { sub: "b@b.com".to_owned(), company: "ACME".to_owned(), exp: 10000000000 };
+        Claims { sub: "token_xyz/table_list".to_owned(), company: "ACME".to_owned(), exp: 10000000000 };
     let key = b"secret";
 
     let header =
@@ -29,7 +29,7 @@ fn main() {
     //=========================================== 
 
     // DECODING
-    let token_data = match decode::<Claims>(
+    let token_data: jsonwebtoken::TokenData<Claims> = match decode::<Claims>(
         &token,
         &DecodingKey::from_secret(key),
         &Validation::new(Algorithm::HS512),
